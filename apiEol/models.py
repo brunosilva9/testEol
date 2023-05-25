@@ -8,39 +8,35 @@ from django.contrib.auth.models import User
 class Context(models.Model):
     """
         Model
-        [   'user_id', 'path', 'course_id', 'org_id','course_user_tags X','asides X', 'module']
+        # [   'user_id', 'path', 'course_id', 'org_id','course_user_tags X','asides X', 'module']
         Course Tag and Asides always empty
     """
 
-    user_id = models.IntegerField(default=0)
-    path = models.CharField(max_length=255, default='')
-    course_id = models.CharField(max_length=255, default='')
-    org_id = models.CharField(max_length=255, default='')
-    module = models.CharField(max_length=255, default='')
+    user_id = models.IntegerField(default=0, null=True)
+    path = models.CharField(max_length=255, default='', null=True)
+    course_id = models.CharField(max_length=255, default='', null=True)
+    org_id = models.CharField(max_length=255, default='', null=True)
+    module = models.CharField(max_length=255, default='', null=True)
 
 
 class Event(models.Model):
     """
         Model 
-        ['context', 'username', 'session', 'agent', 'host', 'referer', 'accept_language', 'event', 'time', 'event_type', 'event_source', 'page'] 
-        # format time 2023-04-02T23:55:05.014262+00:00
+        # ['context', 'username', 'session', 'agent', 'host', 'referer', 'accept_language', 'event', 'time', 'event_type', 'event_source', 'page'] 
+        # format time 2023-04-02T23:55:05.014262+00:00 %Y-%m-%dT%H:%M:%S.%f%z
     """
     context = models.ForeignKey(
         Context,
         on_delete=models.CASCADE,
         related_name="context")
-    username = models.CharField(max_length=255, default='')
-    agent = models.CharField(max_length=255, default='')
-    host = models.CharField(max_length=255, default='')
-    referer = models.CharField(max_length=255, default='')
-    accept_language = models.CharField(max_length=255, default='')
-    session = models.CharField(max_length=255, default='')
-    event = models.CharField(max_length=255, default='')
-    event_type = models.CharField(max_length=255, default='')
-    event_source = models.CharField(max_length=255, default='')
-    page = models.CharField(max_length=255, default='')
+    username = models.CharField(max_length=255, default='',null=True )
+    agent = models.CharField(max_length=255, default='',null=True )
+    host = models.CharField(max_length=255, default='',null=True )
+    referer = models.CharField(max_length=255, default='',null=True )
+    accept_language = models.CharField(max_length=255, default='',null=True )
+    session = models.CharField(max_length=255, default='',null=True )
+    event = models.CharField(max_length=255, default='',null=True )
+    event_type = models.CharField(max_length=255, default='',null=True )
+    event_source = models.CharField(max_length=255, default='',null=True )
+    page = models.CharField(max_length=255, default='', null=True)
     time = models.DateTimeField(null=True, default=None, blank=True)
-
-
-
-
