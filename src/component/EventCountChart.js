@@ -1,79 +1,85 @@
-import React, { useEffect, useState } from 'react';
-import { Line } from 'react-chartjs-2';
-
+import React, { useEffect, useState } from "react";
+import { groupedDataFeched } from "./FetchData";
+import { Line } from "react-chartjs-2";
+import { CategoryScale, LinearScale, LineElement, PointElement, Title, Tooltip, Legend } from 'chart.js';
+import Chart from "chart.js/auto";
+Chart.register(CategoryScale, LinearScale, LineElement, PointElement, Title, Tooltip, Legend);
 const EventCountChart = () => {
-    const [chartData, setChartData] = useState(null);
+    const [data, setData] = useState([]);
+    const [labels, setLabels] = useState([]);
+    const [startTime, setStartTime] = useState(0);
+    const [endTime, setEndTime] = useState(143);
 
     useEffect(() => {
-        // Llamar al endpoint para obtener los datos
-        fetch('http://localhost:8000/count_events_per_minute/')
-            .then((response) => response.json())
-            .then((data) => {
-                // Preparar los datos para el gráfico
-                const groupedData = [];
-                for (let i = 0; i < data.length; i += 10) {
-                    const group = data.slice(i, i + 10);
-                    const sum = group.reduce((total, item) => total + item, 0);
-                    groupedData.push(sum);
-                }
+        const fetchData = async () => {
+            const { groupedData, labels } = await groupedDataFeched();
+            setData(groupedData);
+            setLabels(labels);
+        };
 
-                const labels = [];
-                for (let i = 0; i < 144; i++) {
-                    const minutes = i * 10;
-                    const hours = Math.floor(minutes / 60).toString().padStart(2, '0');
-                    const mins = (minutes % 60).toString().padStart(2, '0');
-                    labels.push(`${hours}:${mins}`);
-                }
-                console.log(groupedData);
-                console.log(labels);
+        fetchData();
+    }, []);
 
-                // Configuración del gráfico
-                const chartData = {
-                    labels,
+    const filteredData = data.slice(startTime, endTime + 1);
+    const filteredLabels = labels.slice(startTime, endTime + 1);
+
+    const handleStartTimeChange = (value) => {
+        if (value <= endTime) {
+            setStartTime(value);
+        }
+    };
+
+    const handleEndTimeChange = (value) => {
+        if (value >= startTime) {
+            setEndTime(value);
+        }
+    };
+
+    const eventCountChart = (
+        <div style={{ width: "100%", height: "100%" }}>
+            <Line
+                data={{
+                    labels: filteredLabels,
                     datasets: [
                         {
-                            label: 'Suma de eventos',
-                            data: groupedData,
-                            fill: false,
-                            borderColor: 'rgba(75,192,192,1)',
-                            tension: 0.1,
+                            data: filteredData,
+                            label: "Events Count",
+                            borderColor: "rgb(0, 217, 255)",
+                            fill: true,
                         },
                     ],
-                };
-
-                // Opciones de configuración del gráfico
-                const options = {
-                    scales: {
-                        x: {
-                            title: {
-                                display: true,
-                                text: 'Hora',
-                            },
-                        },
-                        y: {
-                            title: {
-                                display: true,
-                                text: 'Suma',
-                            },
-                        },
-                    },
-                };
-
-                // Actualizar el estado del gráfico
-                setChartData({ data: chartData, options });
-            });
-    }, []);
+                }}
+            />
+        </div>
+    );
 
     return (
         <div>
-            {chartData ? (
-                <div>
-                    <h2>Eventos totales del 3 de abril</h2>
-                    <Line data={chartData.data} options={chartData.options} />
-                </div>
-            ) : (
-                <p>Cargando datos...</p>
-            )}
+            <div>
+                <label htmlFor="startTime">Start Time:</label>
+                <input
+                    type="range"
+                    id="startTime"
+                    value={startTime}
+                    min={0}
+                    max={endTime}
+                    onChange={(e) => handleStartTimeChange(Number(e.target.value))}
+                />
+                <span>{labels[startTime]}</span>
+            </div>
+            <div>
+                <label htmlFor="endTime">End Time:</label>
+                <input
+                    type="range"
+                    id="endTime"
+                    value={endTime}
+                    min={startTime}
+                    max={143}
+                    onChange={(e) => handleEndTimeChange(Number(e.target.value))}
+                />
+                <span>{labels[endTime]}</span>
+            </div>
+            <div>{eventCountChart}</div>
         </div>
     );
 };
