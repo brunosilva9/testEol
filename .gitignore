@@ -99,3 +99,4 @@ dmypy.json
 .pytype/
 cython_debug/
 apiEol/data/data.json
+src/mock_data/

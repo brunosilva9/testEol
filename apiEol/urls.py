@@ -15,7 +15,17 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 
-from django.urls import  path
+from django.urls import path
+
+from .views import count_events_per_minute,  get_event_count, get_filtered_events,get_first_10_Events
+
 urlpatterns = [
+    path('get_filtered_events/', get_filtered_events, name='get_filtered_events'),
+    path('get_event_count/', get_event_count, name='get_event_count'),
+    path('get_first_10_Events/', get_first_10_Events, name='get_first_10_Events'),
+    path('count_events_per_minute/', count_events_per_minute, name='count_events_per_minute'),
+
+
+
 
 ]

@@ -9,8 +9,10 @@ class Context(models.Model):
     """
         Model
         # [   'user_id', 'path', 'course_id', 'org_id','course_user_tags X','asides X', 'module']
-        Course Tag and Asides always empty
+        Course Tag and Asides always empty        
     """
+    #def __str__(self):
+    #    return self.course_id
 
     user_id = models.IntegerField(default=0, null=True)
     path = models.CharField(max_length=255, default='', null=True)
@@ -23,7 +25,7 @@ class Event(models.Model):
     """
         Model 
         # ['context', 'username', 'session', 'agent', 'host', 'referer', 'accept_language', 'event', 'time', 'event_type', 'event_source', 'page'] 
-        # format time 2023-04-02T23:55:05.014262+00:00 %Y-%m-%dT%H:%M:%S.%f%z
+        # format time 2023-04-02T23:55:05.014262+00:00 %Y-%m-%dT%H:%M:%S.%f%Z
     """
     context = models.ForeignKey(
         Context,

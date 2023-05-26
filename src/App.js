@@ -1,22 +1,39 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import React, { useEffect, useState } from "react";
+import GraphComponentWithFilter from "./component/GraphComponentWithFilter";
+import EventCountChart from "./component/EventCountChart.js";
+import mock from "./mock_data/data.json"; // to Do ELIMinate
 
-function App() {
+
+const SERVER_URL = 'http://localhost:8000';
+
+const App = () => {
+  const [data, setData] = useState([mock]);
+  const [eventsPerMinute, setEventsPerMinute] = useState([]);
+  //setData(mock); // to Do ELIMinate
+
+  useEffect(() => {
+    console.log("tratando de acceder al end point")
+
+    fetch(`${SERVER_URL}/count_events_per_minute/`)
+      .then((data) => {
+        console.log(data);
+        setEventsPerMinute(data);
+      })
+      .catch((error) => {
+        // Manejar errores
+      });
+    // load mock  
+
+
+  }, []);
+
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+
+        <EventCountChart />
+        <GraphComponentWithFilter data={data} />
       </header>
     </div>
   );
