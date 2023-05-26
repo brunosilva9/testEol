@@ -17,15 +17,18 @@ Including another URLconf
 
 from django.urls import path
 
-from .views import count_events_per_minute,  get_event_count, get_filtered_events,get_first_10_Events
+from .views import count_events_per_minute,  get_event_count, get_filtered_events, get_first_10_Events, unique_instances_context, unique_instances_event
 
 urlpatterns = [
     path('get_filtered_events/', get_filtered_events, name='get_filtered_events'),
     path('get_event_count/', get_event_count, name='get_event_count'),
     path('get_first_10_Events/', get_first_10_Events, name='get_first_10_Events'),
-    path('count_events_per_minute/', count_events_per_minute, name='count_events_per_minute'),
-
-
+    path('count_events_per_minute/', count_events_per_minute,
+         name='count_events_per_minute'),
+    path('unique_instances_event/', unique_instances_event,
+         name='unique_instances_event'),
+    path('unique_instances_context/', unique_instances_context,
+         name='unique_instances_context'),
 
 
 ]

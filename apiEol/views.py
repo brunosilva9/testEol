@@ -27,6 +27,19 @@ def get_first_10_Events(request):
              } for record in records]
     return JsonResponse(data, safe=False)
 
+def unique_instances_context(request):
+    # http://localhost:8000/unique_instances_context/?parameter=course_id
+    parameter = request.GET.get('parameter')
+    instances = Context.objects.values(parameter).distinct()
+    unique_values = [instance[parameter] for instance in instances]
+    return JsonResponse(unique_values, safe=False)
+
+def unique_instances_event(request):
+    # http://localhost:8000/unique_instances_event/?parameter=username
+    parameter = request.GET.get('parameter')
+    instances = Event.objects.values(parameter).distinct()
+    unique_values = [instance[parameter] for instance in instances]
+    return JsonResponse(unique_values, safe=False)
 
 def get_filtered_events(request):
     username = request.GET.get('username')
