@@ -19,7 +19,9 @@ You need get python 3.X
 And django for run the server
 
 pip install django
+
 pip install django-cors-headers
+
 
 --------------------------------------------------
 
