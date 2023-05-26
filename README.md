@@ -4,7 +4,9 @@ BackEnd with Django api Framework and Frontend with ReactJs.
 
 # Install the node package and make the static files 
 npm i 
+
 npm run build
+
 ----------------------------------------------------
 # Data settings
 In the folder ApiEol/data/
