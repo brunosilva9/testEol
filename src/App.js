@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import GraphComponentWithFilter from "./component/GraphComponentWithFilter";
 import EventCountChart from "./component/EventCountChart.js";
-import mock from "./mock_data/data.json"; // ELIMINAR
 import Switch from "react-switch";
 
 const App = () => {
@@ -18,7 +17,7 @@ const App = () => {
             {isEventCountChartVisible ? (
               <EventCountChart  />
             ) : (
-              <GraphComponentWithFilter data={mock} />
+              <GraphComponentWithFilter data={[]} />
             )}
           </div>
           <div style={{ textAlign: "center", marginBottom: "20px" }}>
